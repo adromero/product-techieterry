@@ -1,0 +1,38 @@
+---
+// Header component for Techie Terry's Tech Blog
+// Displays site title, tagline, and Terry's avatar
+
+interface Props {
+  isHomePage?: boolean;
+}
+
+const { isHomePage = false } = Astro.props;
+---
+
+<header class="bg-background border-b border-secondary/30 py-6">
+  <div class="max-w-prose mx-auto px-4">
+    <a href="/" class="flex items-center gap-4 no-underline hover:opacity-90 transition-opacity">
+      <img
+        src="/images/terry-avatar.png"
+        alt="Techie Terry"
+        width="64"
+        height="64"
+        class="w-16 h-16 rounded-full border-2 border-primary shadow-md"
+      />
+      <div>
+        {isHomePage ? (
+          <h1 class="text-2xl md:text-3xl font-sans font-bold text-primary m-0">
+            Techie Terry's Tech Blog
+          </h1>
+        ) : (
+          <p class="text-2xl md:text-3xl font-sans font-bold text-primary m-0">
+            Techie Terry's Tech Blog
+          </p>
+        )}
+        <p class="text-sm md:text-base text-text/70 font-serif italic m-0 mt-1">
+          Chronicling technology's promise since 1984
+        </p>
+      </div>
+    </a>
+  </div>
+</header>

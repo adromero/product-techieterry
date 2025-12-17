@@ -1,0 +1,87 @@
+---
+// CommentSection component for Techie Terry's Tech Blog
+// Displays fictional comments in period-appropriate forum style
+
+interface Comment {
+  author: string;
+  date: string;
+  content: string;
+}
+
+interface Props {
+  comments: Comment[];
+}
+
+const { comments } = Astro.props;
+
+/**
+ * Formats a date string to "Month DDth, YYYY" format
+ * e.g., "1984-03-20" -> "March 20th, 1984"
+ *
+ * If the date is already in a human-readable format (e.g., "March 20th, 1984"),
+ * it passes through unchanged.
+ */
+function formatDate(dateString: string): string {
+  // Check if the date is already formatted (contains month name)
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  // If the string contains a month name, assume it's already formatted
+  if (monthNames.some(month => dateString.includes(month))) {
+    return dateString;
+  }
+
+  const date = new Date(dateString);
+
+  // Check if parsing failed
+  if (isNaN(date.getTime())) {
+    return dateString; // Return original if can't parse
+  }
+
+  const month = monthNames[date.getMonth()];
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  // Determine ordinal suffix
+  let suffix = 'th';
+  if (day === 1 || day === 21 || day === 31) {
+    suffix = 'st';
+  } else if (day === 2 || day === 22) {
+    suffix = 'nd';
+  } else if (day === 3 || day === 23) {
+    suffix = 'rd';
+  }
+
+  return `${month} ${day}${suffix}, ${year}`;
+}
+---
+
+{comments && comments.length > 0 && (
+  <section class="mt-12 pt-8 border-t border-text/20">
+    <h2 class="text-xl font-sans font-bold text-text mb-6">
+      Comments ({comments.length})
+    </h2>
+
+    <div class="space-y-4 text-sm md:text-base">
+      {comments.map((comment) => (
+        <article
+          class="bg-[#f3f4f6] border-l-4 border-primary/60 pl-4 py-3 pr-4 ml-4"
+        >
+          <header class="flex flex-wrap items-baseline gap-x-2 mb-2">
+            <span class="font-sans font-semibold text-text">
+              {comment.author}
+            </span>
+            <span class="text-xs md:text-sm text-text/60 font-serif">
+              {formatDate(comment.date)}
+            </span>
+          </header>
+          <p class="font-serif text-text leading-relaxed m-0">
+            {comment.content}
+          </p>
+        </article>
+      ))}
+    </div>
+  </section>
+)}

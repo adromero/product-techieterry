@@ -1,0 +1,104 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+import DecadeNav from '../components/DecadeNav.astro';
+import DisillusionmentAside from '../components/DisillusionmentAside.astro';
+import StallmanBadge from '../components/StallmanBadge.astro';
+import CommentSection from '../components/CommentSection.astro';
+
+interface Comment {
+  author: string;
+  date: string;
+  content: string;
+}
+
+interface Props {
+  title: string;
+  date: Date;
+  decade: string;
+  author: string;
+  tags: string[];
+  previousDisillusionment?: string | null;
+  stallmanAside: boolean;
+  comments: Comment[];
+}
+
+const {
+  title,
+  date,
+  decade,
+  author,
+  tags,
+  previousDisillusionment,
+  stallmanAside,
+  comments
+} = Astro.props;
+
+function formatPostDate(postDate: Date): string {
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const month = months[postDate.getMonth()];
+  const day = postDate.getDate();
+  const year = postDate.getFullYear();
+
+  let suffix = 'th';
+  if (day === 1 || day === 21 || day === 31) {
+    suffix = 'st';
+  } else if (day === 2 || day === 22) {
+    suffix = 'nd';
+  } else if (day === 3 || day === 23) {
+    suffix = 'rd';
+  }
+
+  return `${month} ${day}${suffix}, ${year}`;
+}
+---
+
+<BaseLayout title={`${title} | Techie Terry's Tech Blog`} description={`${title} - A post by ${author}`}>
+  <article class="w-full px-4 py-8 md:max-w-[65ch] md:mx-auto">
+    <header class="mb-8">
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <DecadeNav currentDecade={decade} />
+        {stallmanAside && (
+          <StallmanBadge size="md" />
+        )}
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-sans font-bold text-text mb-4">
+        {title}
+      </h1>
+
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-text/70 font-serif">
+        <span>By {author}</span>
+        <span>•</span>
+        <time datetime={date.toISOString().split('T')[0]}>
+          {formatPostDate(date)}
+        </time>
+      </div>
+
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4">
+          {tags.map((tag) => (
+            <span class="text-xs bg-secondary/20 text-text/80 px-2 py-1 rounded font-sans">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    {previousDisillusionment && (
+      <DisillusionmentAside previousDisillusionment={previousDisillusionment} />
+    )}
+
+    <div class="prose prose-lg max-w-none font-serif">
+      <slot />
+    </div>
+
+    <CommentSection comments={comments} />
+  </article>
+
+  <Footer />
+</BaseLayout>

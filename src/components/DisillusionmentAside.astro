@@ -1,0 +1,13 @@
+---
+interface Props {
+  previousDisillusionment: string;
+}
+
+const { previousDisillusionment } = Astro.props;
+---
+
+<aside class="disillusionment-aside my-6 pl-4 border-l-4 border-amber-300 bg-amber-50/50">
+  <p class="italic text-gray-600">
+    Looking back at my predictions about {previousDisillusionment}, I'll admit things didn't unfold exactly as I envisioned...
+  </p>
+</aside>

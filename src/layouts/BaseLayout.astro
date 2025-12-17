@@ -1,0 +1,135 @@
+---
+import Header from '../components/Header.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  isHomePage?: boolean;
+}
+
+const {
+  title = "Techie Terry's Tech Blog",
+  description = "Chronicling the eternal optimism of technology since the 1980s",
+  canonicalUrl,
+  ogImage = "/images/terry-avatar.png",
+  isHomePage = false
+} = Astro.props;
+
+// Use site URL or fallback for development
+const siteUrl = Astro.site?.toString() || "https://techieterry.example.com";
+const currentUrl = canonicalUrl || Astro.url.pathname;
+const fullCanonicalUrl = new URL(currentUrl, siteUrl).toString();
+const fullOgImage = new URL(ogImage, siteUrl).toString();
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Techie Terry" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={fullCanonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullOgImage} />
+    <meta property="og:site_name" content="Techie Terry's Tech Blog" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullOgImage} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={fullCanonicalUrl} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#2563eb" />
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/images/terry-avatar.png" as="image" />
+
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a href="#main-content" class="skip-link sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded">
+      Skip to main content
+    </a>
+    <Header isHomePage={isHomePage} />
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+    <footer id="secret-footer" class="mt-16 py-8 border-t border-gray-200 text-center text-sm text-gray-500 hidden">
+      <p class="mb-2">Built with Astro + Tailwind CSS</p>
+      <p class="mb-1">Written Entirely by Claude Code</p>
+      <p class="mb-4 italic">Feel depressed yet?</p>
+      <p>Questions/Comments: <a href="mailto:digitalstructures@proton.me" class="text-blue-600 hover:underline">digitalstructures@proton.me</a></p>
+    </footer>
+    <script is:inline>
+      (function() {
+        const ALL_POSTS = [
+          '1984-03-personal-computers',
+          '1987-11-electronic-mail',
+          '1989-06-stallman-visionary',
+          '1993-02-world-wide-web',
+          '1997-09-stallman-right-but',
+          '2002-04-social-networks',
+          '2006-08-stallman-admirable',
+          '2011-01-content-creators',
+          '2015-03-stallman-impractical',
+          '2021-06-ai-revolution',
+          '2024-11-stallman-quaint',
+          '2025-12-ai-creativity-amplifier'
+        ];
+        const STORAGE_KEY = 'terry_visited_posts';
+
+        function getVisited() {
+          try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+          } catch { return []; }
+        }
+
+        function markVisited(slug) {
+          const visited = getVisited();
+          if (!visited.includes(slug)) {
+            visited.push(slug);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(visited));
+          }
+        }
+
+        function allRead() {
+          const visited = getVisited();
+          return ALL_POSTS.every(p => visited.includes(p));
+        }
+
+        // Mark current post as visited if on a post page
+        const path = window.location.pathname;
+        const match = path.match(/\/posts\/([^/]+)\/?$/);
+        if (match) {
+          markVisited(match[1]);
+        }
+
+        // Show footer if all posts read
+        if (allRead()) {
+          document.getElementById('secret-footer')?.classList.remove('hidden');
+        }
+      })();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

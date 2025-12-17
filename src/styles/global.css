@@ -1,0 +1,31 @@
+/* Tailwind CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Custom Properties - Design System Colors */
+:root {
+  --color-primary: #2563eb;
+  --color-secondary: #f59e0b;
+  --color-bg: #fefce8;
+  --color-text: #1c1917;
+}
+
+/* Base styles using custom properties */
+@layer base {
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+}
+
+/* Utility for hiding scrollbars while keeping scroll functionality */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+}
