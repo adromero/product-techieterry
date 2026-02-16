@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200">
+
+  <!-- Stacked bars icon - 3 horizontal bars forming a rounded square shape -->
+  <g transform="translate(160, 22)">
+    <!-- Top bar with rounded top corners -->
+    <rect x="0" y="0" width="80" height="22" rx="6" ry="6" fill="#000"/>
+    <!-- Square off bottom corners of top bar -->
+    <rect x="0" y="12" width="80" height="10" fill="#000"/>
+
+    <!-- Middle bar (no rounding) -->
+    <rect x="0" y="30" width="80" height="22" fill="#000"/>
+
+    <!-- Bottom bar with rounded bottom corners -->
+    <rect x="0" y="60" width="80" height="22" rx="6" ry="6" fill="#000"/>
+    <!-- Square off top corners of bottom bar -->
+    <rect x="0" y="60" width="80" height="10" fill="#000"/>
+  </g>
+
+  <!-- Text: DIGITALSTRUCTURES -->
+  <text x="200" y="160" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" letter-spacing="3">
+    <tspan font-weight="700" fill="#000">DIGITAL</tspan><tspan font-weight="400" fill="#000">STRUCTURES</tspan>
+  </text>
+</svg>
